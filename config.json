@@ -1,0 +1,123 @@
+{
+  "cacheBust": "2026100802",
+
+  "site": {
+    "badge": "ESP32-S3",
+    "title": "小智 AI 智能聊天机器人",
+    "subtitle": "用 USB 线连接设备，在浏览器里直接刷入固件，无需安装任何工具。",
+    "footer": "由 esp-web-tools 提供浏览器端烧录能力 · 固件不经过任何服务器中转"
+  },
+
+  "product": {
+    "name": "小智 AI 智能聊天机器人",
+    "description": "基于 ESP32-S3 的桌面 AI 语音助手。刷入固件后按屏幕提示配网，即可开始语音对话。",
+    "image": "",
+    "badges": ["ESP32-S3", "16 MB Flash", "AI 语音对话", "支持 TF 卡"],
+    "links": [
+      { "label": "小智官网", "url": "https://xiaozhi.me" }
+    ],
+    "specs": [
+      { "label": "主控", "value": "ESP32-S3" },
+      { "label": "Flash", "value": "16 MB" },
+      { "label": "烧录偏移", "value": "0x0（单文件镜像）" },
+      { "label": "三合一分区", "value": "3×OTA + 唤醒词模型" },
+      { "label": "标准版分区", "value": "2×OTA + assets" }
+    ],
+    "tables": [
+      {
+        "title": "三合一固件分区布局",
+        "columns": ["分区", "起始地址", "大小"],
+        "rows": [
+          ["nvs", "0x009000", "16 KB"],
+          ["otadata", "0x00D000", "8 KB"],
+          ["phy_init", "0x00F000", "4 KB"],
+          ["model", "0x010000", "960 KB"],
+          ["ota_0（小智）", "0x100000", "6144 KB"],
+          ["ota_1（收音机）", "0x700000", "2304 KB"],
+          ["ota_2（音乐）", "0x940000", "2304 KB"]
+        ]
+      },
+      {
+        "title": "标准固件分区布局",
+        "columns": ["分区", "起始地址", "大小"],
+        "rows": [
+          ["nvs", "0x009000", "16 KB"],
+          ["otadata", "0x00D000", "8 KB"],
+          ["phy_init", "0x00F000", "4 KB"],
+          ["ota_0（小智）", "0x020000", "4032 KB"],
+          ["ota_1（备用）", "0x410000", "4032 KB"],
+          ["assets", "0x800000", "8192 KB"]
+        ]
+      }
+    ]
+  },
+
+  "flashing": {
+    "chipFamily": "ESP32-S3",
+    "baudRate": 921600,
+    "steps": [
+      "用 <strong>USB-C 数据线</strong>把设备连到电脑（注意是数据线，只能充电的线不行）。",
+      "在上方 <strong>选择固件</strong>，确认固件类型和版本无误。",
+      "点击 <strong>连接设备并烧录</strong>，在浏览器弹出的窗口里选中设备的串口。",
+      "首次烧录务必勾选<strong>擦除 Flash</strong>，等待 2~4 分钟。",
+      "设备自动重启后按屏幕提示配网，即可开始使用。"
+    ],
+    "tips": [
+      "浏览器里找不到串口：换一根数据线；ESP32-S3 的原生 USB 口认不到的话，改用板子上的 UART 口（CH340 / CP2102）。",
+      "一直连不上：按住 BOOT 键不放，点一下 RESET，再松开 BOOT，强制进入下载模式。",
+      "烧录中途失败或校验不过：把 <code>config.json</code> 里的 <code>baudRate</code> 从 921600 依次降到 460800、115200 再试。",
+      "必须用桌面版 Chrome / Edge / Firefox，iOS 上的所有浏览器都不支持 Web Serial。",
+      "三合一固件体积 16 MB，完整烧录约需 3 分钟，期间请保持连接、不要拔线。"
+    ]
+  },
+
+  "firmwares": [
+    {
+      "id": "allinone",
+      "name": "三合一固件",
+      "badge": "功能最全",
+      "description": "小智 AI 对话 + 网络收音机 + TF 卡音乐播放，三个应用位于独立分区，开机可切换。",
+      "features": ["小智 AI 语音对话", "网络收音机", "TF 卡音乐播放"],
+      "versions": [
+        {
+          "version": "v1.6.0",
+          "date": "2025-12-12",
+          "manifest": "./manifests/allinone_v1_6_0.json",
+          "bin": "./firmware/xiaozhi_s3_allinone_v1.6.0.bin",
+          "size": "16.00 MB",
+          "sha256": "912f2c3016eec30b8c1568e2a0246665053fe21c312be153777b2101729479a8",
+          "latest": true,
+          "changes": [
+            "应用版本 1.6.0，基于 ESP-IDF v5.3.2 编译",
+            "三个应用分别位于 ota_0 / ota_1 / ota_2 三个独立分区",
+            "NVS 已清空，不含任何配网与账号信息，首次使用需重新配网"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "standard",
+      "name": "标准固件",
+      "badge": "轻量",
+      "description": "只保留小智 AI 对话功能，体积更小、启动更快，适合不需要收音机和本地播放的场景。",
+      "features": ["小智 AI 语音对话"],
+      "versions": [
+        {
+          "version": "v2.0.5",
+          "date": "2025-11-30",
+          "manifest": "./manifests/standard_v2_0_5.json",
+          "bin": "./firmware/xiaozhi_s3_standard_v2.0.5.bin",
+          "size": "9.52 MB",
+          "sha256": "49e63a534c12b844107ef3145a1b54275a59d774b57287001aa4451ac3e14606",
+          "latest": true,
+          "changes": [
+            "应用版本 2.0.5，基于 ESP-IDF v5.5.1 编译",
+            "双 OTA 槽位设计，后续可支持 OTA 在线升级",
+            "assets 资源分区独立，语音资源与唤醒词集中存放",
+            "NVS 为空，等同恢复出厂状态"
+          ]
+        }
+      ]
+    }
+  ]
+}

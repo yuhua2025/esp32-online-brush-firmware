@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>小智 AI 智能聊天机器人 · 固件在线烧录</title>
+  <meta name="description" content="在浏览器中直接给小智 AI 智能聊天机器人烧录固件，无需安装任何工具。">
+  <link rel="stylesheet" href="./css/style.css">
+  <!-- esp-web-tools 组件：提供 <esp-web-install-button>，本地自托管，不依赖第三方 CDN -->
+  <script type="module" src="./js/install-button.js"></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <span class="badge" id="brandBadge">WEB FLASHER</span>
+    <h1 id="siteTitle">固件在线烧录</h1>
+    <p id="siteSubtitle"></p>
+  </header>
+
+  <main class="container">
+    <div class="layout">
+
+      <!-- ============ 左列：选固件 + 烧录 ============ -->
+      <div class="column">
+
+        <section class="card">
+          <div class="card-title">第一步 · 选择固件</div>
+          <div class="fw-list" id="firmwareList"></div>
+
+          <div class="field">
+            <label for="versionSelect">版本</label>
+            <select id="versionSelect"></select>
+          </div>
+
+          <div class="changes" id="versionChanges" hidden></div>
+        </section>
+
+        <section class="card">
+          <div class="card-title">第二步 · 连接并烧录</div>
+
+          <div class="flash-panel">
+            <esp-web-install-button id="installBtn" manifest="./manifests/allinone_v1_6_0.json">
+              <button slot="activate" class="btn-flash" type="button">
+                连接设备并烧录
+                <span class="sub" id="chipHint">ESP32-S3</span>
+              </button>
+              <div slot="unsupported" class="fallback">
+                <strong>当前浏览器不支持在线烧录</strong><br>
+                请用桌面版 Chrome、Edge 或 Firefox 打开本页面。iOS 上的所有浏览器都不支持
+                Web Serial，请改用电脑操作。
+              </div>
+              <div slot="not-allowed" class="fallback">
+                <strong>需要通过 HTTPS 访问</strong><br>
+                Web Serial 是安全上下文接口，请在 <code>https://</code> 域名下打开本页面，
+                或在本地用 <code>http://localhost</code> 调试。
+              </div>
+            </esp-web-install-button>
+
+            <div class="flash-meta">
+              <span class="pill" id="metaChip">芯片：ESP32-S3</span>
+              <span class="pill" id="metaBaud">波特率：921600</span>
+              <span class="pill" id="metaSize">固件：—</span>
+              <span class="pill">不经过服务器中转</span>
+            </div>
+
+            <div class="links center" id="downloadLinks">
+              <a id="binLink" href="#" download>下载 .bin 固件</a>
+              <a id="manifestLink" href="#" target="_blank">查看清单</a>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-title">操作步骤</div>
+          <ol class="steps" id="stepList"></ol>
+          <div class="changes" id="tipsBox" hidden></div>
+        </section>
+      </div>
+
+      <!-- ============ 右列：设备信息 ============ -->
+      <div class="column">
+        <section class="card">
+          <div class="card-title" id="productName">设备信息</div>
+          <div class="badges" id="productBadges"></div>
+          <div class="product-image" id="productImage">
+            <span class="placeholder">在 config.json 里配置 product.image 可显示产品图</span>
+          </div>
+          <p id="productDesc" class="muted"></p>
+          <div class="links" id="productLinks"></div>
+        </section>
+
+        <section class="card" id="specCard" hidden>
+          <div class="card-title">技术规格</div>
+          <div class="spec-grid" id="specGrid"></div>
+        </section>
+
+        <section class="card" id="tableCard" hidden>
+          <div class="card-title">分区布局</div>
+          <div id="tableBox"></div>
+        </section>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div id="footerText">由 esp-web-tools 提供浏览器端烧录能力</div>
+    <div class="links center">
+      <a href="https://github.com/esphome/esp-web-tools" target="_blank" rel="noopener">esp-web-tools</a>
+      <a href="https://docs.espressif.com/projects/esptool/" target="_blank" rel="noopener">esptool</a>
+      <a href="https://xiaozhi.me" target="_blank" rel="noopener">小智</a>
+    </div>
+  </footer>
+
+  <script src="./js/app.js"></script>
+</body>
+</html>

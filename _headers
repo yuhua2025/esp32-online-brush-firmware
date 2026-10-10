@@ -1,0 +1,27 @@
+# Netlify / Cloudflare Pages 使用的响应头配置
+# 部署到 Nginx / OpenResty（含 1Panel）时，改用 deploy/1panel-openresty.conf 里的等价规则
+
+/*
+  X-Content-Type-Options: nosniff
+
+# 页面骨架：必须实时，否则用户看不到新增的固件版本
+/
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
+
+# 清单与配置：必须实时，否则用户会烧到旧固件
+/manifests/*
+  Cache-Control: no-cache
+/config.json
+  Cache-Control: no-cache
+
+# 入口脚本与样式没有内容哈希，走协商缓存即可（命中 ETag 返回 304）
+/js/*
+  Cache-Control: no-cache
+/css/*
+  Cache-Control: no-cache
+
+# 固件二进制体积大且内容不变，强缓存；换版本靠文件名和 cacheBust 查询串区分
+/firmware/*
+  Cache-Control: public, max-age=31536000, immutable
