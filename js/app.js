@@ -213,6 +213,116 @@
     });
   }
 
+  /* ---------------- 手动刷入本地固件 ---------------- */
+  // 所有 esp-web-tools 支持的芯片家族，第一项会按 config 的 chipFamily 高亮
+  var CHIP_FAMILIES = [
+    "ESP32-S3", "ESP32", "ESP32-S2", "ESP32-C3", "ESP32-C2",
+    "ESP32-C6", "ESP32-H2", "ESP32-C5", "ESP32-P4", "ESP8266"
+  ];
+
+  var localFileUrl = null;     // 选中 .bin 的 Blob URL
+  var localManifestUrl = null; // 内存中构造的 manifest 的 Blob URL
+
+  function parseOffset(raw) {
+    var s = String(raw || "").trim().toLowerCase();
+    if (!s) return 0;
+    var n;
+    if (s.indexOf("0x") === 0) n = parseInt(s.slice(2), 16);
+    else n = parseInt(s, 10);
+    return isNaN(n) ? 0 : n;
+  }
+
+  function formatSize(bytes) {
+    if (bytes >= 1024 * 1024) return (bytes / 1024 / 1024).toFixed(2) + " MB";
+    if (bytes >= 1024) return (bytes / 1024).toFixed(1) + " KB";
+    return bytes + " B";
+  }
+
+  function buildLocalManifest(file, chip, offset) {
+    return {
+      name: "本地固件 " + file.name,
+      version: "本地",
+      new_install_prompt_erase: true,
+      builds: [
+        {
+          chipFamily: chip,
+          improv: false,
+          parts: [{ path: localFileUrl, offset: offset }]
+        }
+      ]
+    };
+  }
+
+  function setupLocalFirmware(cfg) {
+    var fileInput = $("localFile");
+    var chipSel = $("localChip");
+    var offsetInput = $("localOffset");
+    var panel = $("localFlashPanel");
+    var btn = $("installLocalBtn");
+    if (!fileInput || !chipSel || !panel || !btn) return;
+
+    // 填充芯片下拉：把 config 里的芯片放到最前面并默认选中
+    var defaultChip = (cfg.flashing && cfg.flashing.chipFamily) || "ESP32-S3";
+    var chips = CHIP_FAMILIES.slice();
+    if (chips.indexOf(defaultChip) === -1) chips.unshift(defaultChip);
+    chips.forEach(function (c) {
+      var opt = document.createElement("option");
+      opt.value = c;
+      opt.textContent = c;
+      chipSel.appendChild(opt);
+    });
+    chipSel.value = defaultChip;
+
+    function updateChipHint() {
+      $("localChipHint").textContent = chipSel.value;
+      $("localMetaChip").textContent = "芯片：" + chipSel.value;
+    }
+    updateChipHint();
+    chipSel.addEventListener("change", function () {
+      updateChipHint();
+      // 已选文件时，重新生成 manifest 以套用新芯片
+      if (localFileUrl) refreshLocalManifest();
+    });
+
+    offsetInput.addEventListener("change", function () {
+      if (localFileUrl) refreshLocalManifest();
+    });
+
+    function refreshLocalManifest() {
+      var chip = chipSel.value;
+      var offset = parseOffset(offsetInput.value);
+      var manifest = buildLocalManifest(fileInput.files[0], chip, offset);
+      var blob = new Blob([JSON.stringify(manifest)], { type: "application/json" });
+      var url = URL.createObjectURL(blob);
+      if (localManifestUrl) URL.revokeObjectURL(localManifestUrl);
+      localManifestUrl = url;
+      btn.setAttribute("manifest", url);
+    }
+
+    fileInput.addEventListener("change", function () {
+      var file = fileInput.files && fileInput.files[0];
+      if (!file) {
+        panel.hidden = true;
+        return;
+      }
+      if (localFileUrl) URL.revokeObjectURL(localFileUrl);
+      localFileUrl = URL.createObjectURL(file);
+
+      var chip = chipSel.value;
+      var offset = parseOffset(offsetInput.value);
+      var manifest = buildLocalManifest(file, chip, offset);
+      var blob = new Blob([JSON.stringify(manifest)], { type: "application/json" });
+      if (localManifestUrl) URL.revokeObjectURL(localManifestUrl);
+      localManifestUrl = URL.createObjectURL(blob);
+      btn.setAttribute("manifest", localManifestUrl);
+
+      $("localMetaFile").textContent = "文件：" + file.name;
+      $("localMetaSize").textContent = "大小：" + formatSize(file.size);
+      updateChipHint();
+      panel.hidden = false;
+    });
+  }
+
   /* ---------------- 环境检查 ---------------- */
   function checkSupport() {
     // 组件自身会切到 slot="unsupported" / slot="not-allowed" 的提示内容，
@@ -236,6 +346,7 @@
       renderProduct(cfg);
       renderFlashing(cfg);
       renderFirmwares(cfg);
+      setupLocalFirmware(cfg);
       checkSupport();
     })
     .catch(function (err) {

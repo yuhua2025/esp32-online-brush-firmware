@@ -35,6 +35,58 @@
           <div class="changes" id="versionChanges" hidden></div>
         </section>
 
+        <!-- ============ 手动刷入本地固件 ============ -->
+        <section class="card" id="localFirmwareCard">
+          <div class="card-title">手动刷入本地固件</div>
+          <p class="muted" id="localIntro">
+            选择电脑上的 <code>.bin</code> 固件，直接通过浏览器烧录，不经过任何服务器。
+            适合刷入自己编译的固件或其它离线镜像。
+          </p>
+
+          <div class="local-form">
+            <div class="field">
+              <label for="localFile">固件文件（.bin）</label>
+              <input type="file" id="localFile" class="input" accept=".bin,application/octet-stream">
+            </div>
+
+            <div class="local-row">
+              <div class="field">
+                <label for="localChip">芯片类型</label>
+                <select id="localChip" class="input"></select>
+              </div>
+              <div class="field">
+                <label for="localOffset">烧录偏移</label>
+                <input type="text" id="localOffset" class="input" value="0x0" placeholder="0x0">
+              </div>
+            </div>
+          </div>
+
+          <div class="flash-panel" id="localFlashPanel" hidden>
+            <esp-web-install-button id="installLocalBtn" manifest="">
+              <button slot="activate" class="btn-flash" type="button">
+                连接设备并烧录本地固件
+                <span class="sub" id="localChipHint">ESP32-S3</span>
+              </button>
+              <div slot="unsupported" class="fallback">
+                <strong>当前浏览器不支持在线烧录</strong><br>
+                请用桌面版 Chrome、Edge 或 Firefox 打开本页面。iOS 上的所有浏览器都不支持
+                Web Serial，请改用电脑操作。
+              </div>
+              <div slot="not-allowed" class="fallback">
+                <strong>需要通过 HTTPS 访问</strong><br>
+                Web Serial 是安全上下文接口，请在 <code>https://</code> 域名下打开本页面，
+                或在本地用 <code>http://localhost</code> 调试。
+              </div>
+            </esp-web-install-button>
+
+            <div class="flash-meta">
+              <span class="pill" id="localMetaFile">文件：—</span>
+              <span class="pill" id="localMetaSize">大小：—</span>
+              <span class="pill" id="localMetaChip">芯片：—</span>
+            </div>
+          </div>
+        </section>
+
         <section class="card">
           <div class="card-title">第二步 · 连接并烧录</div>
 
