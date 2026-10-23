@@ -1,0 +1,14 @@
+{
+  "name": "小智 · 标准固件 (dayu-star)",
+  "version": "v2.5.2",
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32-S3",
+      "improv": false,
+      "parts": [
+        { "path": "../firmware/xiaozhi_s3_dayustar_v2.5.2.bin", "offset": 0 }
+      ]
+    }
+  ]
+}

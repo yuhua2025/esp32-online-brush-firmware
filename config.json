@@ -1,5 +1,5 @@
 {
-  "cacheBust": "2026100802",
+  "cacheBust": "2026102301",
 
   "site": {
     "badge": "ESP32-S3",
@@ -97,24 +97,23 @@
     },
     {
       "id": "standard",
-      "name": "标准固件",
-      "badge": "轻量",
-      "description": "只保留小智 AI 对话功能，体积更小、启动更快，适合不需要收音机和本地播放的场景。",
-      "features": ["小智 AI 语音对话"],
+      "name": "标准固件（dayu-star）",
+      "badge": "dayu-star",
+      "description": "基于 dayu-star 主板的小智 AI 语音对话固件，已内置 Wi-Fi 配网。体积适中、启动快，适合不需要收音机和本地音乐播放的场景。",
+      "features": ["小智 AI 语音对话", "Wi-Fi 配网"],
       "versions": [
         {
-          "version": "v2.0.5",
-          "date": "2025-11-30",
-          "manifest": "./manifests/standard_v2_0_5.json",
-          "bin": "./firmware/xiaozhi_s3_standard_v2.0.5.bin",
-          "size": "9.52 MB",
-          "sha256": "49e63a534c12b844107ef3145a1b54275a59d774b57287001aa4451ac3e14606",
+          "version": "v2.5.2",
+          "date": "2026-10-23",
+          "manifest": "./manifests/dayustar_v2_5_2.json",
+          "bin": "./firmware/xiaozhi_s3_dayustar_v2.5.2.bin",
+          "size": "9.69 MB",
+          "sha256": "1b5b3dfa23e629aba57f3690e6c3afe68fb7ed39911a8705c526c59999dd105e",
           "latest": true,
           "changes": [
-            "应用版本 2.0.5，基于 ESP-IDF v5.5.1 编译",
-            "双 OTA 槽位设计，后续可支持 OTA 在线升级",
-            "assets 资源分区独立，语音资源与唤醒词集中存放",
-            "NVS 为空，等同恢复出厂状态"
+            "dayu-star 主板专用固件 v2.5.2，合并为单一镜像（merged-binary.bin）",
+            "已内置 Wi-Fi 配网（dayu-star-wifi）",
+            "单文件镜像，烧录偏移 0x0，首次使用需重新配网"
           ]
         }
       ]
