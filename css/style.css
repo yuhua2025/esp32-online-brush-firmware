@@ -129,6 +129,29 @@ code {
 }
 
 /* ---------- 手动刷入本地固件 ---------- */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.5rem 0 1.25rem;
+  color: var(--text-3);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.local-block {
+  text-align: left;
+}
+
 .local-form {
   text-align: left;
 }
@@ -139,15 +162,15 @@ code {
   gap: 1rem;
 }
 
-#localFirmwareCard .muted {
+.local-block .muted {
   margin-bottom: 1.25rem;
 }
 
-#localFirmwareCard .field {
+.local-block .field {
   margin-top: 0;
 }
 
-#localFirmwareCard .flash-panel {
+.local-block .flash-panel {
   margin-top: 1.25rem;
   text-align: center;
 }

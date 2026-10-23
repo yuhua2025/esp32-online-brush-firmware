@@ -22,40 +22,32 @@ import{w as e,y as t,a as o,_ as i,t as l,i as n,x as a}from"./styles-sT2V1cOw.j
         <div slot="headline">未选择串口</div>
         <div slot="content">
           <div>
-            If you didn't select a port because you didn't see your device
-            listed, try the following steps:
+            如果没有看到自己的设备、因此没有选择串口，可以试试以下步骤：
           </div>
           <ol>
             <li>
-              Make sure that the device is connected to this computer (the one
-              that runs the browser that shows this website)
+              确认设备已连接到这台电脑（就是运行浏览器、打开本网站的那台）
             </li>
             <li>
-              Most devices have a tiny light when it is powered on. If yours has
-              one, make sure it is on.
+              大多数设备通电后会有一个小灯亮起。如果你的设备有指示灯，请确认它是亮的。
             </li>
             <li>
-              Make sure that the USB cable you use can be used for data and is
-              not a power-only cable.
+              确认所用 USB 数据线支持数据传输，而不是只能充电的线。
             </li>
             ${"Linux"===e?a`
                   <li>
-                    If you are using a Linux flavor, make sure that your user is
-                    part of the <code>dialout</code> group so it has permission
-                    to access the device.
+                    如果使用 Linux，请确认你的用户在 <code>dialout</code> 组里，才有权限访问设备。
                     <code class="block"
                       >sudo usermod -a -G dialout YourUserName</code
                     >
-                    You may need to log out & back in or reboot to activate the
-                    new group access.
+                    可能需要注销重新登录或重启电脑，新的组权限才会生效。
                   </li>
                 `:""}
             <li>
-              Make sure you have the right drivers installed. Below are the
-              drivers for common chips used in ESP devices:
+              确认已安装正确的驱动。以下是 ESP 设备常用芯片的驱动下载地址：
               <ul>
                 <li>
-                  CP2102 drivers:
+                  CP2102 驱动：
                   <a
                     href="https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers"
                     target="_blank"
@@ -64,7 +56,7 @@ import{w as e,y as t,a as o,_ as i,t as l,i as n,x as a}from"./styles-sT2V1cOw.j
                   >
                 </li>
                 <li>
-                  CH342, CH343, CH9102 drivers:
+                  CH342、CH343、CH9102 驱动：
                   <a
                     href="https://www.wch.cn/downloads/CH343SER_ZIP.html"
                     target="_blank"
@@ -78,10 +70,10 @@ import{w as e,y as t,a as o,_ as i,t as l,i as n,x as a}from"./styles-sT2V1cOw.j
                     >Mac</a
                   >
                   <br />
-                  (download via blue button with ${s} icon)
+                  (点击带 ${s} 图标的蓝色按钮下载)
                 </li>
                 <li>
-                  CH340, CH341 drivers:
+                  CH340、CH341 驱动：
                   <a
                     href="https://www.wch.cn/downloads/CH341SER_ZIP.html"
                     target="_blank"
@@ -95,7 +87,7 @@ import{w as e,y as t,a as o,_ as i,t as l,i as n,x as a}from"./styles-sT2V1cOw.j
                     >Mac</a
                   >
                   <br />
-                  (download via blue button with ${s} icon)
+                  (点击带 ${s} 图标的蓝色按钮下载)
                 </li>
               </ul>
             </li>
