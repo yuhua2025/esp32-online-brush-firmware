@@ -14,7 +14,7 @@
       "label": "Windows 驱动",
       "name": "CH341SER（CH340/CH341 USB 转串口）",
       "note": "适用于 Windows 7 / 8 / 10 / 11",
-      "file": "./Drive/win/CH341SER.ZIP",
+      "file": "https://raw.githubusercontent.com/yuhua2025/esp32-online-brush-firmware/main/Drive/win/CH341SER.ZIP",
       "size": "697 KB"
     },
     {
@@ -22,7 +22,7 @@
       "label": "macOS 驱动",
       "name": "CH341SER for macOS V1.8",
       "note": "适用于 macOS 10.9+（Intel / Apple 芯片通用）",
-      "file": "./Drive/mac/CH341SER_MAC_V1_8.zip",
+      "file": "https://raw.githubusercontent.com/yuhua2025/esp32-online-brush-firmware/main/Drive/mac/CH341SER_MAC_V1_8.zip",
       "size": "4.3 MB"
     }
   ],
