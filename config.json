@@ -5,7 +5,11 @@
     "badge": "ESP32-S3",
     "title": "小智 AI 智能聊天机器人",
     "subtitle": "用 USB 线连接设备，在浏览器里直接刷入固件，无需安装任何工具。",
-    "footer": "由 esp-web-tools 提供浏览器端烧录能力 · 固件不经过任何服务器中转"
+    "footer": "由 esp-web-tools 提供浏览器端烧录能力 · 固件不经过任何服务器中转",
+    "source": {
+      "label": "本项目源码",
+      "url": "https://github.com/yuhua2025/esp32-online-brush-firmware"
+    }
   },
 
   "drivers": [

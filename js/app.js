@@ -31,6 +31,18 @@
     if (s.subtitle) $("siteSubtitle").textContent = s.subtitle;
     if (s.badge) $("brandBadge").textContent = s.badge;
     if (s.footer) $("footerText").textContent = s.footer;
+    renderSource(s.source);
+  }
+
+  /* ---------------- 源码地址（页脚） ---------------- */
+  function renderSource(src) {
+    var box = $("footerLinks");
+    if (!box || !src || !src.url) return;
+    var a = el("a", null, "💻 " + (src.label || "源码"));
+    a.href = src.url;
+    a.target = "_blank";
+    a.rel = "noopener";
+    box.appendChild(a);
   }
 
   /* ---------------- 驱动下载（头部） ---------------- */
