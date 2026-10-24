@@ -8,6 +8,25 @@
     "footer": "由 esp-web-tools 提供浏览器端烧录能力 · 固件不经过任何服务器中转"
   },
 
+  "drivers": [
+    {
+      "os": "windows",
+      "label": "Windows 驱动",
+      "name": "CH341SER（CH340/CH341 USB 转串口）",
+      "note": "适用于 Windows 7 / 8 / 10 / 11",
+      "file": "./Drive/win/CH341SER.ZIP",
+      "size": "697 KB"
+    },
+    {
+      "os": "macos",
+      "label": "macOS 驱动",
+      "name": "CH341SER for macOS V1.8",
+      "note": "适用于 macOS 10.9+（Intel / Apple 芯片通用）",
+      "file": "./Drive/mac/CH341SER_MAC_V1_8.zip",
+      "size": "4.3 MB"
+    }
+  ],
+
   "product": {
     "name": "小智 AI 智能聊天机器人",
     "description": "基于 ESP32-S3 的桌面 AI 语音助手。刷入固件后按屏幕提示配网，即可开始语音对话。",

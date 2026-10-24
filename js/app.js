@@ -33,6 +33,32 @@
     if (s.footer) $("footerText").textContent = s.footer;
   }
 
+  /* ---------------- 驱动下载（头部） ---------------- */
+  var OS_ICON = { windows: "🪟", macos: "🍎" };
+
+  function renderDrivers(cfg) {
+    var bar = $("driverBar");
+    if (!bar) return;
+    var drivers = cfg.drivers || [];
+    if (!drivers.length) { bar.hidden = true; return; }
+
+    bar.hidden = false;
+    bar.appendChild(el("span", "driver-bar-title", "驱动下载"));
+
+    var links = el("span", "driver-links");
+    drivers.forEach(function (d, i) {
+      if (i > 0) links.appendChild(el("span", "driver-sep", "·"));
+      var a = el("a", "driver-link", null);
+      a.href = bust(d.file);
+      a.setAttribute("download", "");
+      a.rel = "noopener";
+      a.textContent = (OS_ICON[d.os] || "") + " " +
+        (d.label || d.os) + (d.size ? "（" + d.size + "）" : "");
+      links.appendChild(a);
+    });
+    bar.appendChild(links);
+  }
+
   /* ---------------- 设备信息 ---------------- */
   function renderProduct(cfg) {
     var p = cfg.product || {};
@@ -343,6 +369,7 @@
       CFG = cfg;
       BUST = cfg.cacheBust || "";
       renderHeader(cfg);
+      renderDrivers(cfg);
       renderProduct(cfg);
       renderFlashing(cfg);
       renderFirmwares(cfg);
