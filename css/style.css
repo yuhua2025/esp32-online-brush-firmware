@@ -411,7 +411,7 @@ select:focus,
 
 .product-image img {
   max-width: 100%;
-  max-height: 240px;
+  max-height: 300px;
   object-fit: contain;
   display: block;
 }

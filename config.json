@@ -30,7 +30,7 @@
   "product": {
     "name": "小智 AI 智能聊天机器人",
     "description": "基于 ESP32-S3 的桌面 AI 语音助手。刷入固件后按屏幕提示配网，即可开始语音对话。",
-    "image": "",
+    "image": "./img/product.jpg",
     "badges": ["ESP32-S3", "16 MB Flash", "AI 语音对话", "支持 TF 卡"],
     "links": [
       { "label": "小智官网", "url": "https://xiaozhi.me" }
