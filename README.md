@@ -6,17 +6,28 @@
 底层是 [esp-web-tools](https://github.com/esphome/esp-web-tools)（WLED / Tasmota / ESPHome
 官方安装器都在用），在此基础上做了中文化和多固件类型管理。
 
+**功能一览**
+- 浏览器内一键烧录：插线 → 选固件 → 点按钮，无需安装任何工具
+- 多固件 / 多版本管理：三合一固件、标准固件（dayu-star）可切换，版本变更与 SHA256 实时展示
+- 手动烧录本地固件：支持自选 `.bin` 文件离线烧录，不经过任何服务器
+- 驱动下载：页头提供 Windows / macOS 的 CH340/CH341 串口驱动直链
+- 设备信息卡：产品图、规格参数、分区布局一览
+- 源码跳转：页脚一键打开本项目 GitHub 仓库
+
 ---
 
 ## 一、当前收录的固件
 
-| 固件类型 | 版本 | 应用版本 | IDF | 大小 | 编译时间 |
-| --- | --- | --- | --- | --- | --- |
-| 三合一固件 | v1.6.0 | 1.6.0 | v5.3.2 | 16.00 MB | 2025-05-20 |
-| 标准固件 | v2.0.5 | 2.0.5 | v5.5.1 | 9.52 MB | 2025-11-30 |
+| 固件类型 | 版本 | 大小 | 日期 | 说明 |
+| --- | --- | --- | --- | --- |
+| 三合一固件 | v1.6.0 | 16.00 MB | 2025-12-12 | 小智 + 收音机 + TF 卡音乐，三应用独立分区 |
+| 标准固件（dayu-star） | v2.5.2 | 9.69 MB | 2026-10-23 | dayu-star 主板专用，已内置 Wi-Fi 配网，单文件镜像 |
 
 两者均为 **ESP32-S3**、16 MB Flash、单文件镜像、烧录偏移 `0x0`。
-站点会自动识别芯片型号，两种固件共用一个烧录按钮。
+站点会自动识别芯片型号，两种固件在「第一步 · 选择固件」里切换、共用一个烧录按钮。
+
+页头「驱动下载」提供 Windows / macOS 的 CH340/CH341 串口驱动直链，
+首次烧录用到的电脑若识别不到串口，先装好对应驱动。
 
 ---
 
@@ -58,14 +69,17 @@ python3 scripts/sanitize_dump.py --in 你的镜像.bin --out clean.bin
 ```
 esp-web-flasher/
 ├── index.html              页面骨架（含 <esp-web-install-button>）
-├── config.json             ★ 站点内容 + 固件清单，只有这个文件需要你改
+├── config.json             ★ 站点全部内容（固件 / 驱动 / 设备信息 / 页脚链接）都在这里改
+├── CNAME                   GitHub Pages 自定义域名（xiaozhi.515166.xyz）
 ├── css/style.css           样式
 ├── js/
 │   ├── install-button.js   esp-web-tools 组件入口
 │   ├── app.js              页面渲染 + 固件/版本切换
-│   └── （其余 24 个 js）   组件的动态 import 依赖，别删
+│   └── （其余 25 个 js）   组件的动态 import 依赖，别删
 ├── manifests/              固件清单，每个型号+版本一个
 ├── firmware/               固件本体
+├── Drive/                  CH340/CH341 串口驱动（win/CH341SER.ZIP、mac/CH341SER_MAC_V1_8.zip）
+├── img/                    产品图（product.jpg）与原始素材
 ├── scripts/
 │   ├── sanitize_dump.py    ★ 检查 / 擦除整盘镜像里的隐私数据
 │   ├── merge_firmware.sh   把编译产物合并成可在线烧录的单文件
@@ -144,7 +158,7 @@ python3 scripts/add_version.py --list
 任意静态托管都行，整个目录传上去即可：
 
 - **Cloudflare Pages / Netlify / Vercel**：拖目录，仓库里的 `_headers` 自动生效
-- **GitHub Pages**：推到仓库后开启 Pages
+- **GitHub Pages**：推到仓库后开启 Pages；根目录 `CNAME` 已绑定自定义域名 `xiaozhi.515166.xyz`
 - **对象存储 + CDN**：给 `.bin` 设置 `Content-Type: application/octet-stream`
 
 | 要求 | 说明 |
