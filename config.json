@@ -1,5 +1,5 @@
 {
-  "cacheBust": "2026102301",
+  "cacheBust": "2026110301",
 
   "site": {
     "badge": "ESP32-S3",
@@ -137,6 +137,29 @@
             "dayu-star 主板专用固件 v2.5.2，合并为单一镜像（merged-binary.bin）",
             "已内置 Wi-Fi 配网（dayu-star-wifi）",
             "单文件镜像，烧录偏移 0x0，首次使用需重新配网"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "radio",
+      "name": "收音机固件",
+      "badge": "Dayu-radio",
+      "description": "基于 ESP32-S3 的桌面网络收音机固件：手机网页配网、在线选台、调音量、切换频谱风格，屏幕实时显示台名/歌曲/时间/信号/电量。",
+      "features": ["网页配网", "在线选台（62 台）", "音量 / 频谱调节", "电池电量显示"],
+      "versions": [
+        {
+          "version": "v1.0.0",
+          "date": "2026-11-02",
+          "manifest": "./manifests/radio_v1_0_0.json",
+          "bin": "./firmware/dayu_radio_v1.0.0.bin",
+          "size": "2.88 MB",
+          "sha256": "507e5cbd947f65a4a829dfd012c0f82417ccd400efc5c24343d58e21377c3045",
+          "latest": true,
+          "changes": [
+            "Dayu-radio ESP32-S3 网络收音机固件（源码完全重写版）",
+            "写入地址 0x0，覆盖 bootloader + 分区表 + app，保留其余分区",
+            "含 62 个蜻蜓FM 中文台，支持网页配网与在线选台"
           ]
         }
       ]
