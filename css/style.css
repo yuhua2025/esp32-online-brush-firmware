@@ -128,26 +128,25 @@ code {
   color: var(--text-3);
 }
 
-/* ---------- 布局 ---------- */
+/* ---------- 布局（单列上下） ---------- */
 .container {
-  max-width: 1180px;
+  max-width: 860px;
   margin: 0 auto;
   padding: 0 1.5rem 4rem;
 }
 
 .layout {
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
+  display: flex;
+  flex-direction: column;
   gap: 1.5rem;
-  align-items: start;
 }
 
 .card {
   background: var(--card);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: 1.75rem;
-  margin-bottom: 1.5rem;
 }
 
 .card-title {
@@ -166,6 +165,21 @@ code {
   border-radius: 2px;
   background: var(--accent);
 }
+
+/* ---------- 模块配色 ---------- */
+.card.tone-blue   { background: #f2f7ff; border-color: #dbeafe; }
+.card.tone-green  { background: #f1fbf5; border-color: #d7efdf; }
+.card.tone-amber  { background: #fffaf0; border-color: #f6e6c6; }
+.card.tone-indigo { background: #f5f4ff; border-color: #e3e0ff; }
+.card.tone-slate  { background: #f7f9fc; border-color: #e2e8f0; }
+.card.tone-rose   { background: #fff5f7; border-color: #f8dfe5; }
+
+.card.tone-blue   .card-title::before { background: #2563eb; }
+.card.tone-green  .card-title::before { background: #16a34a; }
+.card.tone-amber  .card-title::before { background: #d97706; }
+.card.tone-indigo .card-title::before { background: #4f46e5; }
+.card.tone-slate  .card-title::before { background: #64748b; }
+.card.tone-rose   .card-title::before { background: #db2777; }
 
 /* ---------- 手动刷入本地固件 ---------- */
 .divider {
@@ -703,10 +717,6 @@ td.mono {
 
 /* ---------- 响应式 ---------- */
 @media (max-width: 900px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
-
   .site-header {
     padding: 2rem 1.25rem 1rem;
   }
