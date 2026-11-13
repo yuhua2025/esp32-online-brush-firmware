@@ -109,34 +109,30 @@
       });
     }
 
-    var tables = p.tables || [];
-    if (tables.length) {
-      $("tableCard").hidden = false;
-      var box = $("tableBox");
-      tables.forEach(function (t) {
-        var block = el("div", "table-block");
-        if (t.title) block.appendChild(el("div", "table-caption", t.title));
-        var wrap = el("div", "table-wrap");
-        var table = el("table");
-        var thead = el("thead");
-        var htr = el("tr");
-        (t.columns || []).forEach(function (c) { htr.appendChild(el("th", null, c)); });
-        thead.appendChild(htr);
-        table.appendChild(thead);
-        var tbody = el("tbody");
-        (t.rows || []).forEach(function (r) {
-          var tr = el("tr");
-          r.forEach(function (cell, i) {
-            tr.appendChild(el("td", i === 1 ? "mono" : null, cell));
-          });
-          tbody.appendChild(tr);
-        });
-        table.appendChild(tbody);
-        wrap.appendChild(table);
-        block.appendChild(wrap);
-        box.appendChild(block);
-      });
-    }
+    renderAbout(p.about);
+  }
+
+  /* ---------------- 关于本项目（通俗易懂的项目说明） ---------------- */
+  function renderAbout(about) {
+    var card = $("aboutCard");
+    if (!card || !about) return;
+    if (about.title) $("aboutTitle").textContent = about.title;
+
+    var box = $("aboutBox");
+    if (about.intro) box.appendChild(el("p", "about-intro", about.intro));
+
+    (about.items || []).forEach(function (it) {
+      var row = el("div", "about-item");
+      if (it.icon) row.appendChild(el("span", "about-icon", it.icon));
+      var body = el("div", "about-body");
+      if (it.title) body.appendChild(el("div", "about-title", it.title));
+      if (it.text) body.appendChild(el("div", "about-text", it.text));
+      row.appendChild(body);
+      box.appendChild(row);
+    });
+
+    if (about.note) box.appendChild(el("div", "about-note", about.note));
+    card.hidden = false;
   }
 
   /* ---------------- 烧录说明 ---------------- */

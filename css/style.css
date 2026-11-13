@@ -443,9 +443,10 @@ select:focus,
 }
 
 .spec-item .v {
-  font-family: var(--mono);
   color: var(--accent-deep);
   text-align: right;
+  font-size: 0.82rem;
+  line-height: 1.5;
 }
 
 /* ---------- 引脚表 ---------- */
@@ -597,18 +598,58 @@ td.mono {
   border-color: #bfd7fb;
 }
 
-/* ---------- 分区表 ---------- */
-.table-block + .table-block {
-  margin-top: 1.4rem;
-  padding-top: 1.2rem;
+/* ---------- 项目说明 ---------- */
+.about-intro {
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--text-2);
+  margin-bottom: 0.4rem;
+}
+
+.about-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.85rem 0;
   border-top: 1px dashed var(--border);
 }
 
-.table-caption {
-  font-size: 0.82rem;
-  font-weight: 600;
+.about-icon {
+  flex: 0 0 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  font-size: 1.05rem;
+  background: var(--accent-soft);
+  border-radius: 10px;
+}
+
+.about-body {
+  min-width: 0;
+  flex: 1;
+}
+
+.about-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.15rem;
+}
+
+.about-text {
+  font-size: 0.84rem;
+  line-height: 1.75;
   color: var(--text-2);
-  margin-bottom: 0.5rem;
+}
+
+.about-note {
+  margin-top: 0.6rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: var(--radius-sm);
+  background: var(--warn-soft);
+  color: var(--warn);
+  font-size: 0.8rem;
+  line-height: 1.65;
 }
 
 .hash {
