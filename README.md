@@ -168,6 +168,7 @@ python3 scripts/add_version.py --list
 | 必须 HTTPS | Web Serial 的安全上下文限制，没有绕过的办法 |
 | 同域或 CORS | 固件若放在别的域名，那台服务器要返回 `Access-Control-Allow-Origin` |
 | 换固件要破缓存 | `add_version.py` 会自动刷新 `cacheBust` 查询串，否则 CDN 会继续发旧固件 |
+| 改样式要破缓存 | `index.html` 里 `style.css?v=...` 的查询串；每次改完 CSS 顺手改一下，否则 GitHub Pages 会继续发旧样式（约 10 分钟） |
 
 单文件超过 25 MB 时注意托管平台的限制，三合一固件 16 MB 在安全范围内。
 
