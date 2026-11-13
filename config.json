@@ -1,5 +1,5 @@
 {
-  "cacheBust": "2026111301",
+  "cacheBust": "2026111302",
 
   "site": {
     "badge": "ESP32-S3",
@@ -10,6 +10,15 @@
       "label": "本项目源码",
       "url": "https://github.com/yuhua2025/esp32-online-brush-firmware"
     }
+  },
+
+  "visits": {
+    "enabled": true,
+    "label": "本站访问量",
+    "unit": "次",
+    "api": "https://events.vercount.one/api/v2/log",
+    "metric": "site_pv",
+    "timeout": 5000
   },
 
   "drivers": [

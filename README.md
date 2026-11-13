@@ -13,6 +13,7 @@
 - 驱动下载：页头提供 Windows / macOS 的 CH340/CH341 串口驱动直链
 - 设备信息卡：产品图、设备一览、通俗易懂的项目说明（原来的分区布局表已换成「关于本项目」）
 - 源码跳转：页脚一键打开本项目 GitHub 仓库
+- 访问量计数：页脚显示全站访问量（免费公共服务），可在 `config.json` 的 `visits` 里一键开关
 
 ---
 
@@ -169,6 +170,16 @@ python3 scripts/add_version.py --list
 | 换固件要破缓存 | `add_version.py` 会自动刷新 `cacheBust` 查询串，否则 CDN 会继续发旧固件 |
 
 单文件超过 25 MB 时注意托管平台的限制，三合一固件 16 MB 在安全范围内。
+
+### 页脚访问量计数
+
+纯静态站点没有后端，计数用免费公共服务 Vercount（`events.vercount.one`，无需注册、支持 CORS）。
+页面加载时由 `js/app.js` 直接 `POST` 一次，取回 `site_pv`（全站总访问量）显示：
+
+- 配置都在 `config.json` 的 `visits`：`enabled: false` 即彻底关闭；`api` 可换成自托管的 Vercount 或其它兼容服务；`metric` 可改成 `site_uv`（访客数）或 `page_pv`（单页浏览量）；`timeout` 是超时毫秒数。
+- 5 秒超时，服务不可用时静默降级：有本地缓存就显示上次的值，没有就整块隐藏，**不影响页面其它功能**。
+- 按页面所在域名分别统计，数据存放在第三方服务；它只接收页面 URL 用于计数，**固件文件仍然不经过任何服务器**。
+- 想完全不依赖第三方，把 `visits.enabled` 设为 `false` 即可。
 
 ---
 

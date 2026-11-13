@@ -498,6 +498,30 @@ td.mono {
   color: var(--text-2);
 }
 
+/* ---------- 访问量计数 ---------- */
+.visit-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  padding: 0.4rem 0.95rem;
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  background: var(--card);
+  color: var(--text-2);
+  font-size: 0.8rem;
+}
+
+.visit-counter strong {
+  color: var(--accent-deep);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.visit-icon {
+  font-size: 0.85rem;
+}
+
 .links {
   display: flex;
   flex-wrap: wrap;

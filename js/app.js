@@ -45,6 +45,70 @@
     box.appendChild(a);
   }
 
+  /* ---------------- 访问量计数（页脚） ----------------
+   * 站点是纯静态的，计数交给公共免费服务；前端自己发请求，便于做超时和
+   * 失败兜底（服务不可用时不会卡住页面，也不显示假数据）。
+   */
+  function formatCount(n) {
+    return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  function renderVisits(cfg) {
+    var v = cfg.visits || {};
+    var box = $("visitCounter");
+    if (!box || !v.enabled || !v.api) return;
+
+    if (v.label) $("visitLabel").textContent = v.label;
+    if (v.unit) $("visitUnit").textContent = v.unit;
+
+    // 与计数服务一致：一年期 cookie 标记新访客，供 UV 去重使用
+    var cookieKey = "vercount_uv_" +
+      (window.location.host || "unknown-host").replace(/[^a-zA-Z0-9_-]/g, "_");
+    var isNewUv = ("; " + document.cookie).indexOf("; " + cookieKey + "=1") === -1;
+    if (isNewUv) {
+      try { document.cookie = cookieKey + "=1; path=/; max-age=31536000; samesite=lax"; }
+      catch (e) { /* 隐私模式下忽略 */ }
+    }
+
+    // 先用上次的值占位，网络慢或服务临时不可用时不会一片空白
+    var cacheKey = "siteVisitCount";
+    var cached = null;
+    try { cached = localStorage.getItem(cacheKey); } catch (e) {}
+    if (cached !== null && Number(cached) >= 0) {
+      $("visitValue").textContent = formatCount(Number(cached));
+      box.hidden = false;
+    }
+
+    var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
+    var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, v.timeout || 5000) : null;
+    var done = function () { if (timer) clearTimeout(timer); };
+
+    fetch(v.api, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url: window.location.href, isNewUv: isNewUv }),
+      signal: ctrl ? ctrl.signal : undefined
+    })
+      .then(function (r) {
+        done();
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      })
+      .then(function (d) {
+        var data = (d && d.data) || {};
+        var n = Number(data[v.metric || "site_pv"]);
+        if (!isFinite(n) || n < 0) return;
+        $("visitValue").textContent = formatCount(n);
+        box.hidden = false;
+        try { localStorage.setItem(cacheKey, String(n)); } catch (e) {}
+      })
+      .catch(function () {
+        done();
+        // 服务不可用：有缓存就保留上次的值，否则整块隐藏
+        if (cached === null) box.hidden = true;
+      });
+  }
+
   /* ---------------- 驱动下载（头部） ---------------- */
   var OS_ICON = { windows: "🪟", macos: "🍎" };
 
@@ -377,6 +441,7 @@
       CFG = cfg;
       BUST = cfg.cacheBust || "";
       renderHeader(cfg);
+      renderVisits(cfg);
       renderDrivers(cfg);
       renderProduct(cfg);
       renderFlashing(cfg);
