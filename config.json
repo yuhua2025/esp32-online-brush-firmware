@@ -1,11 +1,12 @@
 {
-  "cacheBust": "2026111302",
+  "cacheBust": "2026111401",
 
   "site": {
-    "badge": "ESP32-S3",
-    "title": "小智 AI 智能聊天机器人",
-    "subtitle": "用 USB 线连接设备，在浏览器里直接刷入固件，无需安装任何工具。",
-    "footer": "由 esp-web-tools 提供浏览器端烧录能力 · 固件不经过任何服务器中转",
+    "badge": "ESP32-S3 / WEB FLASHER",
+    "title": "ESP32S3小智AI聊天小音箱",
+    "docTitle": "ESP32S3小智AI聊天小音箱 · 固件在线烧录",
+    "subtitle": "一块 ESP32-S3，一只会说话的小音箱。插上 USB-C，在浏览器里直接把固件写进设备 —— 不用装烧录工具、不用敲命令行，固件也不经过任何服务器。",
+    "footer": "// POWERED BY esp-web-tools · 固件仅在本地浏览器与设备之间传输",
     "source": {
       "label": "本项目源码",
       "url": "https://github.com/yuhua2025/esp32-online-brush-firmware"
@@ -41,51 +42,62 @@
   ],
 
   "product": {
-    "name": "小智 AI 智能聊天机器人",
-    "description": "基于 ESP32-S3 的桌面 AI 语音助手。刷入固件后按屏幕提示配网，即可开始语音对话。",
-    "image": "./img/product.jpg",
-    "badges": ["ESP32-S3", "16 MB Flash", "AI 语音对话", "支持 TF 卡"],
+    "name": "设备信息 / DAYU-STAR-WIFI",
+    "description": "基于 dayu-star-wifi 开发板的桌面 AI 语音助手：ESP32-S3 主控、240×240 彩屏、I2S 麦克风与功放、TF 卡本地音乐、锂电池管理。刷入固件后按屏幕提示配一次网即可开始对话。",
+    "image": "./img/device.jpg",
+    "badges": ["ESP32-S3", "16MB FLASH + 8MB PSRAM", "240×240 LCD", "TF 卡 MP3", "小智 AI"],
     "links": [
+      { "label": "dayu-star 板级源码", "url": "https://github.com/yuhua2025/xiaozhi-esp32-dayustar/tree/dayustar-dev/main/boards/dayu-star-wifi" },
       { "label": "小智官网", "url": "https://xiaozhi.me" }
     ],
     "specs": [
-      { "label": "主控芯片", "value": "ESP32-S3" },
-      { "label": "机身存储", "value": "16 MB" },
-      { "label": "可选固件", "value": "3 种" },
-      { "label": "连接方式", "value": "USB 数据线" },
-      { "label": "首次使用", "value": "按屏幕提示连一次 Wi-Fi" }
+      { "label": "主控 MCU", "value": "ESP32-S3（双核 Xtensa）" },
+      { "label": "存储", "value": "16 MB Flash + 8 MB PSRAM" },
+      { "label": "显示", "value": "ST7789 SPI LCD · 240×240" },
+      { "label": "音频输入", "value": "I2S 麦克风 · 16 kHz" },
+      { "label": "音频输出", "value": "I2S 功放 MAX98357 · 24 kHz" },
+      { "label": "扩展存储", "value": "TF 卡（SPI2_HOST，与 LCD 总线分离）" },
+      { "label": "按键", "value": "BOOT / VOL+ / VOL-" },
+      { "label": "电源管理", "value": "ADC 电量检测 + 充电检测 + GPIO21 电源保持" },
+      { "label": "联网协议", "value": "2.4G Wi-Fi · WebSocket / MQTT+UDP" },
+      { "label": "可选固件", "value": "3 种（三合一 / 标准版 / 收音机）" }
     ],
     "about": {
       "title": "关于本项目",
-      "intro": "简单说，这是一个给小智 AI 机器人「重装系统」的网页：插上 USB 线、选好想要的固件、点一下按钮就行，不用装软件，也不用懂命令行。固件由浏览器直接写进设备，不会上传到任何服务器。",
+      "intro": "这是一台可以自己动手「重装系统」的桌面 AI 小音箱。硬件是 dayu-star-wifi 开发板，软件基于小智 ESP32 固件（ESP-IDF v6.1，v2.5.2）。本页只做一件事：把选好的固件通过浏览器 Web Serial 直接写进板子——全程在你自己的电脑上完成，固件不会上传到任何服务器。",
       "items": [
         {
+          "icon": "🛠",
+          "title": "板子上到底有什么",
+          "text": "ESP32-S3 配 16 MB Flash 和 8 MB PSRAM；一块 240×240 的 ST7789 彩屏负责表情和字幕；I2S 麦克风（16 kHz）负责听，MAX98357 I2S 功放（24 kHz）负责说；另外还有 TF 卡槽、BOOT / 音量+ / 音量- 三颗按键，以及电池电量检测和电源保持电路。"
+        },
+        {
+          "icon": "📡",
+          "title": "它怎么跟 AI 聊天",
+          "text": "连上家里 2.4G Wi-Fi 后，固件通过 WebSocket 或 MQTT+UDP 接入小智服务端。按键或语音都能唤醒，说话内容会实时以字幕显示在屏幕上，回答从喇叭播放出来。屏幕右上角还有 Wi-Fi 信号、时间和电池图标。"
+        },
+        {
+          "icon": "💾",
+          "title": "TF 卡本地音乐",
+          "text": "把 MP3 拷进 TF 卡，固件通过 MCP 工具 self.sd_player.list / play / next / stop / status 来列目录、播放、切歌和查状态。因为板子没有回声消除（AEC），放音乐和语音对话是互斥的，不会同时进行。目前不读 ID3 标签，屏幕上只显示曲目序号和时长。"
+        },
+        {
+          "icon": "🔋",
+          "title": "电池与开关机",
+          "text": "ADC 采样电池电压、另一路 GPIO 检测是否插着充电线，空闲一段时间后会自动关机，GPIO21 负责电源保持。所以刷完第一次开机，长按顶部按键开机、连一次 Wi-Fi 就能用了。"
+        },
+        {
           "icon": "🧩",
-          "title": "三种固件，想要哪个选哪个",
-          "text": "「三合一」功能最全：AI 对话、网络收音机、TF 卡音乐都在里面；「标准版」只做 AI 对话，体积小、开机快；「收音机」是专门的网络收音机，能用手机网页选台，屏幕显示台名、时间和电量。"
-        },
-        {
-          "icon": "🔌",
-          "title": "刷之前要准备什么",
-          "text": "一根能传数据的 USB-C 线（只能充电的线不行），加一台装了 Chrome、Edge 或 Firefox 的电脑。如果电脑认不到设备，先装页面顶部的串口驱动。"
-        },
-        {
-          "icon": "📶",
-          "title": "刷完为什么还要连一次 Wi-Fi",
-          "text": "为了不泄露隐私，我们提供的固件已经清空了原来的账号和 Wi-Fi 密码。所以第一次开机会让你重新配一次网，按屏幕提示连上家里的 Wi-Fi 就能用了。"
+          "title": "三种固件怎么选",
+          "text": "「三合一」把 AI 对话、网络收音机、TF 卡音乐打包在一起，功能最全、体积最大；「标准固件 dayu-star v2.5.2」专注小智 AI 对话，启动快；「Dayu-radio v1.0.0」是独立的桌面网络收音机，手机网页配网后能在线选 62 个电台、调音量和频谱。"
         },
         {
           "icon": "🛡️",
-          "title": "固件安全吗",
-          "text": "整个过程都在你自己的电脑和浏览器里完成，固件不经过我们的服务器。也可以点「手动选择本地固件」，刷自己编译的 .bin 文件。"
-        },
-        {
-          "icon": "💡",
-          "title": "卡住了怎么办",
-          "text": "烧录要等 2~4 分钟，期间别拔线。一直连不上就按住 BOOT 键、点一下 RESET 再松开；还不行就换根数据线。更详细的步骤在左边「操作步骤」里。"
+          "title": "固件从哪来、安全吗",
+          "text": "本站提供的都是完整合并镜像，写入偏移 0x0，页面同时给出 SHA256 方便你自己校验。也可以展开「手动选择本地固件」，刷自己用 ESP-IDF 编译出来的 .bin。为了不泄露隐私，发布版已清空账号和 Wi-Fi 密码，首次开机需要重新配网。"
         }
       ],
-      "note": "小提示：手机和 iPad 上没法刷固件，请用电脑操作；中途失败重新刷一次就好。页面源码已开放，可从页脚「本项目源码」进入 GitHub 查看。"
+      "note": "已知限制与提醒：I2S 输出固定 24 kHz、无 AEC、MP3 不解析 ID3 标签。烧录请用桌面版 Chrome / Edge / Firefox（iOS 全系不支持 Web Serial），全程 2~4 分钟别拔线；连不上就按住 BOOT、点一下 RESET 再松开。页面源码已开放，可从页脚「本项目源码」进入 GitHub。"
     }
   },
 
@@ -94,16 +106,16 @@
     "baudRate": 921600,
     "steps": [
       "用 <strong>USB-C 数据线</strong>把设备连到电脑（注意是数据线，只能充电的线不行）。",
-      "在上方 <strong>选择固件</strong>，确认固件类型和版本无误。",
+      "在 <strong>01 / 选择固件</strong>里挑好固件类型和版本，确认无误。",
       "点击 <strong>连接设备并烧录</strong>，在浏览器弹出的窗口里选中设备的串口。",
       "首次烧录务必勾选<strong>擦除 Flash</strong>，等待 2~4 分钟。",
-      "设备自动重启后按屏幕提示配网，即可开始使用。"
+      "设备自动重启后按屏幕提示配网，即可开始语音对话。"
     ],
     "tips": [
       "浏览器里找不到串口：换一根数据线；ESP32-S3 的原生 USB 口认不到的话，改用板子上的 UART 口（CH340 / CP2102）。",
       "一直连不上：按住 BOOT 键不放，点一下 RESET，再松开 BOOT，强制进入下载模式。",
       "烧录中途失败或校验不过：把 <code>config.json</code> 里的 <code>baudRate</code> 从 921600 依次降到 460800、115200 再试。",
-      "必须用桌面版 Chrome / Edge / Firefox，iOS 上的所有浏览器都不支持 Web Serial。",
+      "必须用桌面版 Chrome / Edge / Firefox，iOS 上的所有浏览器都不支持 Web Serial；线上还需 HTTPS。",
       "三合一固件体积 16 MB，完整烧录约需 3 分钟，期间请保持连接、不要拔线。"
     ]
   },

@@ -3,57 +3,100 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>小智 AI 智能聊天机器人 · 固件在线烧录</title>
-  <meta name="description" content="在浏览器中直接给小智 AI 智能聊天机器人烧录固件，无需安装任何工具。">
-  <link rel="stylesheet" href="./css/style.css?v=2026111304">
+  <title>ESP32S3小智AI聊天小音箱 · 固件在线烧录</title>
+  <meta name="description" content="ESP32S3 小智 AI 聊天小音箱固件在线烧录：插上 USB-C，在浏览器里直接刷入三合一、dayu-star 标准版或网络收音机固件，无需安装任何工具。">
+  <meta name="theme-color" content="#070b0f">
+  <link rel="stylesheet" href="./css/style.css?v=2026111401">
   <!-- esp-web-tools 组件：提供 <esp-web-install-button>，本地自托管，不依赖第三方 CDN -->
   <script type="module" src="./js/install-button.js"></script>
 </head>
 <body>
+  <div class="bg-grid" aria-hidden="true"></div>
 
+  <!-- ============ HERO / 终端窗口 ============ -->
   <header class="site-header">
-    <span class="badge" id="brandBadge">WEB FLASHER</span>
-    <h1 id="siteTitle">固件在线烧录</h1>
-    <p id="siteSubtitle"></p>
-    <div class="driver-bar" id="driverBar"></div>
+    <div class="shell terminal">
+      <div class="window-bar">
+        <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="window-path">root@xiaozhi:~/esp32s3-web-flasher$ <b>./flash.sh</b></span>
+        <span class="window-status"><i></i> SYSTEM ONLINE</span>
+      </div>
+
+      <div class="hero">
+        <div class="term-cmd"><span class="prompt">$</span> web-serial --chip esp32s3 --baud 921600 --no-server</div>
+
+        <span class="badge" id="brandBadge">ESP32-S3 / WEB FLASHER</span>
+        <h1 id="siteTitle">ESP32S3小智AI聊天小音箱</h1>
+        <p id="siteSubtitle"></p>
+
+        <div class="hero-stats" aria-label="硬件概要">
+          <div class="stat"><span class="k">MCU</span><span class="v">ESP32-S3</span></div>
+          <div class="stat"><span class="k">FLASH / PSRAM</span><span class="v">16M / 8M</span></div>
+          <div class="stat"><span class="k">DISPLAY</span><span class="v">240×240</span></div>
+          <div class="stat"><span class="k">FIRMWARES</span><span class="v">03</span></div>
+        </div>
+
+        <div class="hero-art">
+          <span class="corner tl" aria-hidden="true"></span>
+          <span class="corner tr" aria-hidden="true"></span>
+          <span class="corner bl" aria-hidden="true"></span>
+          <span class="corner br" aria-hidden="true"></span>
+          <img src="./img/hero-pcb.png?v=2026111401" alt="dayu-star 主板 3D 渲染图：蓝色 PCB、ESP32-S3 模组与天线走线">
+          <div class="art-caption">
+            <span>DAYU-STAR / REV.B</span>
+            <span class="art-caption-right">3D PCB RENDER · ESP32-S3</span>
+          </div>
+        </div>
+
+        <div class="driver-bar" id="driverBar"></div>
+      </div>
+
+      <nav class="jump-nav" aria-label="页面导航">
+        <a href="#sec-firmware"><span>01</span> 固件</a>
+        <a href="#sec-flash"><span>02</span> 烧录</a>
+        <a href="#sec-steps"><span>03</span> 操作步骤</a>
+        <a href="#sec-gallery"><span>04</span> 硬件图鉴</a>
+        <a href="#aboutCard"><span>05</span> 关于项目</a>
+      </nav>
+    </div>
   </header>
 
-  <main class="container">
+  <main class="container shell">
     <div class="layout">
 
-      <!-- 1 · 选择固件 -->
-      <section class="card tone-blue">
-        <div class="card-title">第一步 · 选择固件</div>
+      <!-- ============ 01 · 选择固件 ============ -->
+      <section class="card" id="sec-firmware">
+        <div class="card-title" data-idx="01"><span>选择固件</span><span class="en">FIRMWARE_SELECT</span></div>
         <div class="fw-list" id="firmwareList"></div>
 
         <div class="field">
-          <label for="versionSelect">版本</label>
+          <label for="versionSelect">// 版本 VERSION</label>
           <select id="versionSelect"></select>
         </div>
 
         <div class="changes" id="versionChanges" hidden></div>
 
-        <div class="divider"><span>或手动选择本地固件</span></div>
+        <div class="divider"><span>OR / 手动选择本地固件</span></div>
 
         <div class="local-block">
           <p class="muted" id="localIntro">
-            选择电脑上的 <code>.bin</code> 固件，直接通过浏览器烧录，不经过任何服务器。
+            选择电脑上的 <code>.bin</code> 固件，浏览器直接生成 manifest 并烧录，文件不会上传到任何服务器。
             适合刷入自己编译的固件或其它离线镜像。
           </p>
 
           <div class="local-form">
             <div class="field">
-              <label for="localFile">固件文件（.bin）</label>
+              <label for="localFile">// 固件文件 FIRMWARE_FILE (.bin)</label>
               <input type="file" id="localFile" class="input" accept=".bin,application/octet-stream">
             </div>
 
             <div class="local-row">
               <div class="field">
-                <label for="localChip">芯片类型</label>
+                <label for="localChip">// 芯片 CHIP_FAMILY</label>
                 <select id="localChip" class="input"></select>
               </div>
               <div class="field">
-                <label for="localOffset">烧录偏移</label>
+                <label for="localOffset">// 烧录偏移 OFFSET</label>
                 <input type="text" id="localOffset" class="input" value="0x0" placeholder="0x0">
               </div>
             </div>
@@ -62,7 +105,7 @@
           <div class="flash-panel" id="localFlashPanel" hidden>
             <esp-web-install-button id="installLocalBtn" manifest="">
               <button slot="activate" class="btn-flash" type="button">
-                连接设备并烧录本地固件
+                ▸ 连接设备并烧录本地固件
                 <span class="sub" id="localChipHint">ESP32-S3</span>
               </button>
               <div slot="unsupported" class="fallback">
@@ -86,14 +129,14 @@
         </div>
       </section>
 
-      <!-- 2 · 连接并烧录 -->
-      <section class="card tone-green">
-        <div class="card-title">第二步 · 连接并烧录</div>
+      <!-- ============ 02 · 连接并烧录 ============ -->
+      <section class="card" id="sec-flash">
+        <div class="card-title" data-idx="02"><span>连接并烧录</span><span class="en">FLASH_DEVICE</span></div>
 
         <div class="flash-panel">
           <esp-web-install-button id="installBtn" manifest="./manifests/allinone_v1_6_0.json">
             <button slot="activate" class="btn-flash" type="button">
-              连接设备并烧录
+              ▸ 连接设备并烧录
               <span class="sub" id="chipHint">ESP32-S3</span>
             </button>
             <div slot="unsupported" class="fallback">
@@ -112,26 +155,53 @@
             <span class="pill" id="metaChip">芯片：ESP32-S3</span>
             <span class="pill" id="metaBaud">波特率：921600</span>
             <span class="pill" id="metaSize">固件：—</span>
-            <span class="pill">不经过服务器中转</span>
+            <span class="pill">● 不经过服务器中转</span>
           </div>
 
           <div class="links center" id="downloadLinks">
-            <a id="binLink" href="#" download>下载 .bin 固件</a>
-            <a id="manifestLink" href="#" target="_blank">查看清单</a>
+            <a id="binLink" href="#" download>↓ 下载 .bin 固件</a>
+            <a id="manifestLink" href="#" target="_blank">↗ 查看清单 manifest</a>
           </div>
         </div>
       </section>
 
-      <!-- 3 · 操作步骤 -->
-      <section class="card tone-amber">
-        <div class="card-title">操作步骤</div>
+      <!-- ============ 03 · 操作步骤 ============ -->
+      <section class="card" id="sec-steps">
+        <div class="card-title" data-idx="03"><span>操作步骤</span><span class="en">RUNBOOK</span></div>
         <ol class="steps" id="stepList"></ol>
         <div class="changes" id="tipsBox" hidden></div>
       </section>
 
-      <!-- 4 · 设备信息 -->
-      <section class="card tone-indigo">
-        <div class="card-title" id="productName">设备信息</div>
+      <!-- ============ 04 · 硬件图鉴 ============ -->
+      <section class="card" id="sec-gallery">
+        <div class="card-title" data-idx="04"><span>硬件图鉴</span><span class="en">GALLERY / DAYU-STAR</span></div>
+        <div class="gallery-grid">
+          <figure class="shot">
+            <div class="shot-bar"><span>device.jpg</span><span>01 / FRONT</span></div>
+            <div class="shot-img"><img src="./img/device.jpg?v=2026111401" loading="lazy" alt="小智 AI 聊天小音箱成品正面：彩屏显示表情，下方橙色喇叭"></div>
+            <figcaption><strong>成品正面</strong>240×240 彩屏 + I2S 喇叭，屏幕上实时显示表情、时间与电量。</figcaption>
+          </figure>
+          <figure class="shot">
+            <div class="shot-bar"><span>product.jpg</span><span>02 / PAIR</span></div>
+            <div class="shot-img"><img src="./img/product.jpg?v=2026111401" loading="lazy" alt="紫色与黑色两台小智 AI 聊天小音箱，屏幕显示对话字幕"></div>
+            <figcaption><strong>双色机身</strong>紫 / 黑两种外壳，屏幕可显示 AI 对话字幕。</figcaption>
+          </figure>
+          <figure class="shot">
+            <div class="shot-bar"><span>board-back.jpg</span><span>03 / MCU</span></div>
+            <div class="shot-img"><img src="./img/board-back.jpg?v=2026111401" loading="lazy" alt="主控板背面特写：ESP32-S3-WROOM-1 模组、MAX98357 功放与 USB-C 接口"></div>
+            <figcaption><strong>主控板背面</strong>ESP32-S3-WROOM-1、MAX98357 功放、TF 卡槽与 USB-C。</figcaption>
+          </figure>
+          <figure class="shot">
+            <div class="shot-bar"><span>lcd-module.jpg</span><span>04 / STACK</span></div>
+            <div class="shot-img"><img src="./img/lcd-module.jpg?v=2026111401" loading="lazy" alt="拆开后的核心板与 ST7789 屏幕模块分层摆放"></div>
+            <figcaption><strong>分层结构</strong>核心板与 ST7789 屏幕模块通过排针叠装。</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ============ 05 · 设备信息 ============ -->
+      <section class="card" id="sec-product">
+        <div class="card-title" id="productName" data-idx="05">设备信息</div>
         <div class="badges" id="productBadges"></div>
         <div class="product-image" id="productImage">
           <span class="placeholder">在 config.json 里配置 product.image 可显示产品图</span>
@@ -140,15 +210,15 @@
         <div class="links" id="productLinks"></div>
       </section>
 
-      <!-- 5 · 设备一览 -->
-      <section class="card tone-slate" id="specCard" hidden>
-        <div class="card-title">设备一览</div>
+      <!-- ============ 06 · 设备一览 ============ -->
+      <section class="card" id="specCard" hidden>
+        <div class="card-title" data-idx="06"><span>设备一览</span><span class="en">HARDWARE_SPEC</span></div>
         <div class="spec-grid" id="specGrid"></div>
       </section>
 
-      <!-- 6 · 关于本项目 -->
-      <section class="card tone-rose" id="aboutCard" hidden>
-        <div class="card-title" id="aboutTitle">关于本项目</div>
+      <!-- ============ 07 · 关于本项目 ============ -->
+      <section class="card" id="aboutCard" hidden>
+        <div class="card-title" id="aboutTitle" data-idx="07">关于本项目</div>
         <div id="aboutBox"></div>
       </section>
 
@@ -156,20 +226,25 @@
   </main>
 
   <footer class="site-footer">
-    <div id="footerText">由 esp-web-tools 提供浏览器端烧录能力</div>
-    <div class="links center" id="footerLinks">
-      <a href="https://github.com/esphome/esp-web-tools" target="_blank" rel="noopener">esp-web-tools</a>
-      <a href="https://docs.espressif.com/projects/esptool/" target="_blank" rel="noopener">esptool</a>
-      <a href="https://xiaozhi.me" target="_blank" rel="noopener">小智</a>
-    </div>
-    <div class="visit-counter" id="visitCounter" hidden>
-      <span class="visit-icon">👁</span>
-      <span id="visitLabel">本站访问量</span>
-      <strong id="visitValue">—</strong>
-      <span id="visitUnit">次</span>
+    <div class="shell">
+      <div class="footer-top">
+        <span class="footer-brand">ESP32S3_XIAOZHI // WEB FLASHER</span>
+        <span id="footerText">由 esp-web-tools 提供浏览器端烧录能力</span>
+      </div>
+      <div class="links center" id="footerLinks">
+        <a href="https://github.com/esphome/esp-web-tools" target="_blank" rel="noopener">esp-web-tools</a>
+        <a href="https://docs.espressif.com/projects/esptool/" target="_blank" rel="noopener">esptool</a>
+        <a href="https://xiaozhi.me" target="_blank" rel="noopener">小智</a>
+      </div>
+      <div class="visit-counter" id="visitCounter" hidden>
+        <span class="visit-icon">◉</span>
+        <span id="visitLabel">本站访问量</span>
+        <strong id="visitValue">—</strong>
+        <span id="visitUnit">次</span>
+      </div>
     </div>
   </footer>
 
-  <script src="./js/app.js"></script>
+  <script src="./js/app.js?v=2026111401"></script>
 </body>
 </html>

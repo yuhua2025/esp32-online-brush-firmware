@@ -27,7 +27,12 @@
   /* ---------------- 头部 ---------------- */
   function renderHeader(cfg) {
     var s = cfg.site || {};
-    if (s.title) { document.title = s.title + " · 固件在线烧录"; $("siteTitle").textContent = s.title; }
+    if (s.title) {
+      document.title = s.docTitle || (s.title + " · 固件在线烧录");
+      $("siteTitle").textContent = s.title;
+    } else if (s.docTitle) {
+      document.title = s.docTitle;
+    }
     if (s.subtitle) $("siteSubtitle").textContent = s.subtitle;
     if (s.badge) $("brandBadge").textContent = s.badge;
     if (s.footer) $("footerText").textContent = s.footer;
@@ -38,7 +43,7 @@
   function renderSource(src) {
     var box = $("footerLinks");
     if (!box || !src || !src.url) return;
-    var a = el("a", null, "💻 " + (src.label || "源码"));
+    var a = el("a", null, "[ SRC ] " + (src.label || "源码"));
     a.href = src.url;
     a.target = "_blank";
     a.rel = "noopener";
@@ -119,11 +124,11 @@
     if (!drivers.length) { bar.hidden = true; return; }
 
     bar.hidden = false;
-    bar.appendChild(el("span", "driver-bar-title", "驱动下载"));
+    bar.appendChild(el("span", "driver-bar-title", "DRIVERS // 驱动下载"));
 
     var links = el("span", "driver-links");
     drivers.forEach(function (d, i) {
-      if (i > 0) links.appendChild(el("span", "driver-sep", "·"));
+      if (i > 0) links.appendChild(el("span", "driver-sep", "/"));
       var a = el("a", "driver-link", null);
       a.href = bust(d.file);
       a.setAttribute("download", "");
@@ -148,8 +153,10 @@
       var box = $("productImage");
       box.innerHTML = "";
       var img = el("img");
-      img.src = p.image;
+      img.src = bust(p.image);
       img.alt = p.name || "产品图";
+      img.loading = "lazy";
+      img.decoding = "async";
       box.appendChild(img);
     }
 

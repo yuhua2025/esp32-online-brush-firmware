@@ -1,17 +1,20 @@
-# 小智 AI 智能聊天机器人 · 固件在线烧录站
+# ESP32S3小智AI聊天小音箱 · 固件在线烧录站
 
 纯静态站点：用户插上 USB 线、点一下按钮，固件就写进设备了。
 没有后端，固件不经过任何服务器中转，全部在浏览器里完成。
 
 底层是 [esp-web-tools](https://github.com/esphome/esp-web-tools)（WLED / Tasmota / ESPHome
-官方安装器都在用），在此基础上做了中文化和多固件类型管理。
+官方安装器都在用），在此基础上做了中文化、多固件类型管理，以及一套深色终端 / 极客风页面。
+硬件与功能说明参考 [dayu-star-wifi 板级 README](https://github.com/yuhua2025/xiaozhi-esp32-dayustar/blob/dayustar-dev/main/boards/dayu-star-wifi/README.md)。
 
 **功能一览**
 - 浏览器内一键烧录：插线 → 选固件 → 点按钮，无需安装任何工具
-- 多固件 / 多版本管理：三合一固件、标准固件（dayu-star）可切换，版本变更与 SHA256 实时展示
+- 多固件 / 多版本管理：三合一、标准固件（dayu-star）、收音机（Dayu-radio）三种可切换，版本变更与 SHA256 实时展示
 - 手动烧录本地固件：支持自选 `.bin` 文件离线烧录，不经过任何服务器
-- 驱动下载：页头提供 Windows / macOS 的 CH340/CH341 串口驱动直链
-- 设备信息卡：产品图、设备一览、通俗易懂的项目说明（原来的分区布局表已换成「关于本项目」）
+- 驱动下载：页头提供 Windows / macOS 的 CH340/CH341 串口驱动同域直链
+- 深色终端风页面：终端窗口标题栏、网格背景、荧光绿 / 青配色、编号模块与快捷导航；整体保持上下单列布局
+- 图片元素：hero 使用透明背景的 3D PCB 渲染图，「硬件图鉴」展示成品、双色机身、主控板背面、屏幕分层四张实拍图
+- 设备信息卡：产品图、10 项硬件规格、基于 dayu-star-wifi 源码改写的项目说明
 - 源码跳转：页脚一键打开本项目 GitHub 仓库
 - 访问量计数：页脚显示全站访问量（免费公共服务），可在 `config.json` 的 `visits` 里一键开关
 
@@ -26,7 +29,7 @@
 | 收音机固件（Dayu-radio） | v1.0.0 | 2.88 MB | 2026-11-02 | ESP32-S3 网络收音机，网页配网 / 在线选台（62 台） |
 
 三者均为 **ESP32-S3**、单文件镜像、烧录偏移 `0x0`。
-站点会自动识别芯片型号，三种固件在「第一步 · 选择固件」里切换、共用一个烧录按钮。
+站点会自动识别芯片型号，三种固件在「01 / 选择固件」里切换、共用一个烧录按钮。
 
 页头「驱动下载」提供 Windows / macOS 的 CH340/CH341 串口驱动直链，
 首次烧录用到的电脑若识别不到串口，先装好对应驱动。
@@ -81,7 +84,13 @@ esp-web-flasher/
 ├── manifests/              固件清单，每个型号+版本一个
 ├── firmware/               固件本体
 ├── Drive/                  CH340/CH341 串口驱动（win/CH341SER.ZIP、mac/CH341SER_MAC_V1_8.zip）
-├── img/                    产品图（product.jpg）与原始素材
+├── img/                    网页图片与原始素材
+│   ├── hero-pcb.png        透明背景 3D PCB 渲染（hero）
+│   ├── device.jpg          成品正面（product.image + 图鉴）
+│   ├── product.jpg         双色机身 / 对话界面
+│   ├── board-back.jpg      主控板背面（ESP32-S3-WROOM-1 / MAX98357）
+│   ├── lcd-module.jpg      核心板 + ST7789 屏幕分层
+│   └── IMG_*.jpg / 3D_PCB*.png   未改动的原始照片与渲染图
 ├── scripts/
 │   ├── sanitize_dump.py    ★ 检查 / 擦除整盘镜像里的隐私数据
 │   ├── merge_firmware.sh   把编译产物合并成可在线烧录的单文件
@@ -168,9 +177,20 @@ python3 scripts/add_version.py --list
 | 必须 HTTPS | Web Serial 的安全上下文限制，没有绕过的办法 |
 | 同域或 CORS | 固件若放在别的域名，那台服务器要返回 `Access-Control-Allow-Origin` |
 | 换固件要破缓存 | `add_version.py` 会自动刷新 `cacheBust` 查询串，否则 CDN 会继续发旧固件 |
-| 改样式要破缓存 | `index.html` 里 `style.css?v=...` 的查询串；每次改完 CSS 顺手改一下，否则 GitHub Pages 会继续发旧样式（约 10 分钟） |
+| 改样式要破缓存 | `index.html` 里 `style.css?v=...` 的查询串；每次改完 CSS 顺手改一下，否则 GitHub Pages 会继续发旧样式（约 10 分钟）。当前为 `2026111401`，与 `config.json` 的 `cacheBust` 保持一致 |
 
 单文件超过 25 MB 时注意托管平台的限制，三合一固件 16 MB 在安全范围内。
+
+### 页面主题与图片
+
+`css/style.css` 是独立的深色终端风主题，配色变量集中在 `:root`（`--acid` 荧光绿、`--cyan` 青色）。
+所有模块按 `01`~`07` 编号，编号通过 `.card-title::before` 读 `data-idx` 生成，改标题不用动样式。
+`[hidden] { display: none !important; }` 是必须的：`driverBar` / `visitCounter` / `flash-panel` 等容器
+由 `app.js` 控制显隐，若被 `display:flex` 覆盖就会露出来。
+
+`img/` 里的网页图片都由原始照片裁切、轻度调色、压缩而来（脚本在 `.workbuddy/process_images.py`，
+该目录被 `.gitignore` 忽略）。3D PCB 渲染图本身带透明通道，直接叠在深色 hero 上即可。
+替换图片时注意同步改 `index.html` / `config.json` 里的 `?v=2026111401` 查询串。
 
 ### 页脚访问量计数
 
