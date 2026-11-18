@@ -116,7 +116,7 @@
       "一直连不上：按住 BOOT 键不放，点一下 RESET，再松开 BOOT，强制进入下载模式。",
       "烧录中途失败或校验不过：把 <code>config.json</code> 里的 <code>baudRate</code> 从 921600 依次降到 460800、115200 再试。",
       "必须用桌面版 Chrome / Edge / Firefox，iOS 上的所有浏览器都不支持 Web Serial；线上还需 HTTPS。",
-      "三合一固件体积 16 MB，完整烧录约需 3 分钟，期间请保持连接、不要拔线。"
+      "三合一 / 收音机固件体积 16 MB，完整烧录约需 3 分钟，期间请保持连接、不要拔线。"
     ]
   },
 
@@ -189,16 +189,16 @@
       "versions": [
         {
           "version": "v1.0.0",
-          "date": "2026-11-02",
+          "date": "2026-11-18",
           "manifest": "./manifests/radio_v1_0_0.json",
           "bin": "./firmware/dayu_radio_v1.0.0.bin",
-          "size": "2.88 MB",
-          "sha256": "507e5cbd947f65a4a829dfd012c0f82417ccd400efc5c24343d58e21377c3045",
+          "size": "16.00 MB",
+          "sha256": "7fc6f3505d63e2ae7afdde3a23a2477c44d51fde71332182eb246add32ae651a",
           "latest": true,
           "changes": [
-            "Dayu-radio 网络收音机固件，基于 ESP32-S3 完全重写",
-            "一键完整刷入，刷完按屏幕提示重新配网",
-            "内置 62 个中文电台，支持手机网页选台"
+            "收音机固件升级版：改用 16 MB 完整镜像，替换原先 2.88 MB 的精简镜像",
+            "已实测 NVS 为空白、otadata 无敏感文本，不含 Wi-Fi 密码与账号密钥",
+            "一键完整刷入，刷完按屏幕提示重新配网；内置 62 个中文电台，支持手机网页选台"
           ]
         }
       ]
