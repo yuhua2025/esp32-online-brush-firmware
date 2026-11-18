@@ -1,5 +1,5 @@
 {
-  "cacheBust": "2026111401",
+  "cacheBust": "2026111801",
 
   "site": {
     "badge": "ESP32-S3 / WEB FLASHER",
@@ -152,13 +152,26 @@
       "features": ["小智 AI 语音对话", "Wi-Fi 配网"],
       "versions": [
         {
+          "version": "v2.6.0",
+          "date": "2026-11-18",
+          "manifest": "./manifests/dayustar_v2_6_0.json",
+          "bin": "./firmware/xiaozhi_s3_dayustar_v2.6.0.bin",
+          "size": "9.69 MB",
+          "sha256": "9c77c34c31bd206126860d8d45c1be459f0e2e8c4d742f0543679c79fe4bd3cf",
+          "latest": true,
+          "changes": [
+            "dayu-star 主板标准固件升级到 v2.6.0",
+            "单文件完整镜像，烧录偏移 0x0，一个文件就能刷进去",
+            "已实测 NVS / otadata 为空白，不含 Wi-Fi 密码与账号密钥；首次使用按屏幕提示重新配网"
+          ]
+        },
+        {
           "version": "v2.5.2",
           "date": "2026-10-23",
           "manifest": "./manifests/dayustar_v2_5_2.json",
           "bin": "./firmware/xiaozhi_s3_dayustar_v2.5.2.bin",
           "size": "9.69 MB",
           "sha256": "1b5b3dfa23e629aba57f3690e6c3afe68fb7ed39911a8705c526c59999dd105e",
-          "latest": true,
           "changes": [
             "dayu-star 主板专用 v2.5.2，一个文件就能刷进去",
             "开机按屏幕提示连上 Wi-Fi 即可使用",
